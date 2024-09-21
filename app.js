@@ -2,7 +2,6 @@ let firstNumber = "";
 let secondNumber = "";
 let operator = "";
 let isOperatorClicked = false;
-let isSecondNumberClicked = false;
 
 const add = (a, b) => a + b;
 
@@ -42,7 +41,7 @@ const operate = (a, b, oper) => {
 // function when equal is clicked
 equal.addEventListener("click", () => {
   if (!firstNumber || !operator) {
-    return displayButton.textContent = "error";
+    return (displayButton.textContent = "error");
   }
   const a = parseFloat(firstNumber);
   const b = parseFloat(secondNumber);
@@ -61,25 +60,23 @@ operators.forEach((oper) => {
     const operatorValue = e.target.value;
 
     console.log("Before if:", firstNumber, operator, secondNumber);
-    
+
     if (firstNumber && secondNumber && operator) {
       const a = parseFloat(firstNumber);
       const b = parseFloat(secondNumber);
       const result = operate(a, b, operator);
-      firstNumber = result.toString()
-      operator = operatorValue;      
+      firstNumber = result.toString();
+      operator = operatorValue;
       displayButton.textContent = firstNumber;
-      secondNumber = ""      
-      
+      secondNumber = "";
+
       console.log("Intermediate result:", firstNumber);
       console.log("after if:", firstNumber, operator, secondNumber);
     } else {
       operator = operatorValue;
       console.log("operator value:", operator);
       displayButton.textContent = operator;
-
     }
-    
   });
 });
 
@@ -89,17 +86,15 @@ numbers.forEach((num) => {
     const buttonValue = e.target.value;
     console.log("button value:", typeof buttonValue, buttonValue);
 
-    if (!isOperatorClicked) {
+    if (!operator) {
       firstNumber += buttonValue;
       displayButton.textContent = firstNumber;
       console.log("display (first #)", firstNumber);
-      isOperatorClicked = true
     } else {
       // displayButton.textContent = "";
       secondNumber += buttonValue;
       displayButton.textContent = secondNumber;
       console.log("display (second #)", secondNumber);
-
     }
   });
 });
@@ -117,8 +112,17 @@ clear.addEventListener("click", () => {
 sign.addEventListener("click", () => {
   const value = displayButton.textContent;
   const negatedValue = value * -1;
-  displayButton.textContent = negatedValue;
   console.log("negated value:", negatedValue);
+
+  if (!operator) {
+    firstNumber = negatedValue;
+    displayButton.textContent = firstNumber;
+    console.log("negated first value:", firstNumber);
+  } else {
+    secondNumber = negatedValue;
+    displayButton.textContent = secondNumber;
+    console.log("negated second value:", secondNumber);
+  }
 });
 
 // function when percentage is clicked
