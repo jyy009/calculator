@@ -5,7 +5,7 @@ let currentDisplayValue = "";
 
 const add = (a, b) => a + b;
 
-const subtract = (a, b) => a - b;
+const subtract = (a, b) => (a * 10 - b * 10) / 10;
 
 const multiply = (a, b) => a * b;
 
@@ -49,19 +49,19 @@ const setCurrentDisplayValue = (value) => {
 };
 
 const setFirstNumber = (value) => {
-  firstNumber = parseFloat(value);
+  firstNumber = (value);
   console.log("first number set to:", firstNumber);
 };
 
 const setSecondNumber = (value) => {
-  secondNumber = parseFloat(value);
+  secondNumber = (value);
   console.log("second number set to:", secondNumber);
 };
 
 // Populate display when clicking number buttons
 const getNumberValue = (e) => {
   result = e.target.textContent;
-  console.log("result of number click", result);
+  console.log("result of number click", typeof result);
 
   if (!currentOperator) {
     setFirstNumber(firstNumber + result);
@@ -87,7 +87,7 @@ const setOperator = (e) => {
   }
   if (firstNumber && currentOperator && secondNumber) {
     console.log("current operator value", currentOperator);
-    const result = operate(firstNumber, secondNumber, currentOperator);
+    const result = operate(parseFloat(firstNumber), parseFloat(secondNumber), currentOperator);
     setFirstNumber(result);
     currentOperator = value;
     setCurrentDisplayValue(currentOperator);
@@ -106,7 +106,7 @@ const handleEqualClick = () => {
     setCurrentDisplayValue("error");
     return;
   } else {
-    const result = operate(firstNumber, secondNumber, currentOperator);
+    const result = operate(parseFloat(firstNumber), parseFloat(secondNumber), currentOperator);
     setCurrentDisplayValue(result);
     setFirstNumber(result);
     secondNumber = "";
@@ -128,6 +128,7 @@ const handlePointClick = () => {
   console.log("point value:", value);
   console.log("current display value", currentDisplayValue);
 
+  
   let currentDisplayAsString = currentDisplayValue.toString();
 
   if (!currentDisplayAsString.includes(".")) {
