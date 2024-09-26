@@ -144,6 +144,22 @@ const handlePointClick = () => {
   }
 };
 
+const handlePercentClick = () => {
+  const result = currentDisplayValue / 100;
+  setCurrentDisplayValue(result);
+};
+
+const handleSignClick = () => {
+  const result = currentDisplayValue * -1
+  setCurrentDisplayValue(result)
+
+  if (!currentOperator) {
+    setFirstNumber(result)
+  } else {
+    setSecondNumber(result)
+  }
+}
+
 const main = () => {
   numbers.forEach((num) => {
     num.addEventListener("click", getNumberValue);
@@ -159,6 +175,10 @@ const main = () => {
 
   point.addEventListener("click", handlePointClick);
   clearCurrentDisplay();
+
+  percent.addEventListener("click", handlePercentClick);
+
+  sign.addEventListener("click", handleSignClick)
 };
 
 main();
