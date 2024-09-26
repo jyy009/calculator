@@ -1,7 +1,7 @@
 let firstNumber = "";
 let secondNumber = "";
-let operator = "";
-let isOperatorClicked = false;
+let currentOperator = "";
+let currentDisplayValue = "";
 
 const add = (a, b) => a + b;
 
@@ -15,140 +15,132 @@ const pageContainer = document.querySelector(".page-container");
 const calcContainer = document.querySelector(".calc-container");
 const displayContainer = document.querySelector(".display-container");
 const keypadContainer = pageContainer.querySelector(".keypad-container");
-const displayButton = displayContainer.querySelector(".display-button");
+const displayButton = displayContainer.querySelector(".current-display");
 const equal = keypadContainer.querySelector(".equal");
 const clear = keypadContainer.querySelector(".clear");
 const sign = keypadContainer.querySelector(".sign");
 const percent = keypadContainer.querySelector(".percentage");
 const numbers = keypadContainer.querySelectorAll(".operand");
 const operators = keypadContainer.querySelectorAll(".operator");
+const addButton = document.getElementById("plus-button");
 const point = keypadContainer.querySelector(".point");
 
 const operate = (a, b, oper) => {
   switch (oper) {
-    case "+":
+    case "\u002B":
       return add(a, b);
-    case "-":
+    case "\u2212":
       return subtract(a, b);
-    case "*":
+    case "\u00D7":
       return multiply(a, b);
-    case "/":
+    case "\u00F7":
       const num = divide(a, b);
       return Number(num.toFixed(10));
+    default:
+      throw new Error("Invalid operator");
   }
 };
 
-// function when equal is clicked
-equal.addEventListener("click", () => {
-  if (!firstNumber || !operator) {
-    return (displayButton.textContent = "error");
+// Set current display value
+const setCurrentDisplayValue = (value) => {
+  currentDisplayValue = value;
+  displayButton.textContent = currentDisplayValue;
+  console.log("current display value set to:", currentDisplayValue);
+};
+
+const setFirstNumber = (value) => {
+  firstNumber = parseFloat(value);
+  console.log("first number set to:", firstNumber);
+};
+
+const setSecondNumber = (value) => {
+  secondNumber = parseFloat(value);
+  console.log("second number set to:", secondNumber);
+};
+
+// Populate display when clicking number buttons
+const getNumberValue = (e) => {
+  result = e.target.textContent;
+  console.log("result of number click", result);
+
+  if (!currentOperator) {
+    setFirstNumber(firstNumber + result);
+    setCurrentDisplayValue(firstNumber);
+  } else {
+    setSecondNumber(secondNumber + result);
+    setCurrentDisplayValue(secondNumber);
   }
-  const a = parseFloat(firstNumber);
-  const b = parseFloat(secondNumber);
-  const result = operate(a, b, operator);
-  displayButton.textContent = result;
-  firstNumber = result.toString();
-  console.log("operator result:", result);
-  console.log("first # after first calc:", firstNumber);
-  secondNumber = "";
-  operator = "";
-});
+  
+};
 
-// function when operators are clicked
-operators.forEach((oper) => {
-  oper.addEventListener("click", (e) => {
-    const operatorValue = e.target.value;
+// Set operator value
+const setOperator = (e) => {
+  if (!firstNumber) {
+    console.warn("error");
+    setCurrentDisplayValue("error");
+    return;
+  }
+  const value = e.target.textContent;
 
-    console.log("Before if:", firstNumber, operator, secondNumber);
+  if (firstNumber && !currentOperator && !secondNumber) {
+    currentOperator = value;
+    setCurrentDisplayValue(currentOperator);
+  }
+  if (firstNumber && currentOperator && secondNumber) {
+    console.log("current operator value", currentOperator);
+    const result = operate(firstNumber, secondNumber, currentOperator);
+    setFirstNumber(result);
+    currentOperator = value;
+    setCurrentDisplayValue(currentOperator);
+secondNumber = ""
+// setSecondNumber("")
+console.log("Operation performed:", result);
+  }
 
-    if (firstNumber && secondNumber && operator) {
-      const a = parseFloat(firstNumber);
-      const b = parseFloat(secondNumber);
-      const result = operate(a, b, operator);
-      firstNumber = result.toString();
-      operator = operatorValue;
-      displayButton.textContent = firstNumber;
-      secondNumber = "";
+};
 
-      console.log("Intermediate result:", firstNumber);
-      console.log("after if:", firstNumber, operator, secondNumber);
-    } else {
-      operator = operatorValue;
-      console.log("operator value:", operator);
-      displayButton.textContent = operator;
-    }
-  });
-});
+const handleEqualClick = () => {
+  if (!firstNumber) {
+    console.warn("error");
+    setCurrentDisplayValue("error");
+    return;
+  } else if (firstNumber && currentDisplayValue && !secondNumber) {
+    console.warn("error");
+    setCurrentDisplayValue("error");
+    return;
+  } else {
+    const result = operate(firstNumber, secondNumber, currentOperator);
+    setCurrentDisplayValue(result);
+    setFirstNumber(result);
+    // setSecondNumber("");
+    secondNumber = ""
+currentOperator = ""
+    console.log("current operator after equal", currentOperator);
+  }
+};
 
-// function when numbers are clicked
-numbers.forEach((num) => {
-  num.addEventListener("click", (e) => {
-    const buttonValue = e.target.value;
-    console.log("button value:", typeof buttonValue, buttonValue);
-
-    if (!operator) {
-      firstNumber += buttonValue;
-      displayButton.textContent = firstNumber;
-      console.log("display (first #)", firstNumber);
-    } else {
-      // displayButton.textContent = "";
-      secondNumber += buttonValue;
-      displayButton.textContent = secondNumber;
-      console.log("display (second #)", secondNumber);
-    }
-  });
-});
-
-// function when clear button is clicked
-clear.addEventListener("click", () => {
-  isOperatorClicked = false;
+const clearCurrentDisplay = () => {
   firstNumber = "";
   secondNumber = "";
-  operator = "";
-  displayButton.textContent = "";
-});
+  setCurrentDisplayValue("");
+  currentOperator = "";
+  console.log("calc cleared");
+};
 
-// function when negate button is clicked
-sign.addEventListener("click", () => {
-  const value = displayButton.textContent;
-  const negatedValue = value * -1;
-  console.log("negated value:", negatedValue);
+const main = () => {
+  numbers.forEach((num) => {
+    num.addEventListener("click", getNumberValue);
+  });
 
-  if (!operator) {
-    firstNumber = negatedValue;
-    displayButton.textContent = firstNumber;
-    console.log("negated first value:", firstNumber);
-  } else {
-    secondNumber = negatedValue;
-    displayButton.textContent = secondNumber;
-    console.log("negated second value:", secondNumber);
-  }
-});
+  clear.addEventListener("click", clearCurrentDisplay);
 
-// function when percentage is clicked
-percent.addEventListener("click", () => {
-  const value = displayButton.textContent;
-  const percent = value / 100;
-  displayButton.textContent = percent;
-  console.log("percentage:", percent);
-});
+  equal.addEventListener("click", handleEqualClick);
 
-// function when point is clicked
-point.addEventListener("click", () => {
-  const pointValue = ".";
-  const currentValue = displayButton.textContent;
+  operators.forEach((oper) => {
+    oper.addEventListener("click", setOperator);
+  });
 
-  if (!currentValue.includes(".")) {
-    const newValue = currentValue + pointValue;
+  clearCurrentDisplay();
+};
 
-    if (!isOperatorClicked) {
-      firstNumber = newValue;
-      console.log("pointed value:", newValue);
-      displayButton.textContent = firstNumber;
-    } else {
-      secondNumber = newValue;
-      console.log("pointed value:", newValue);
-      displayButton.textContent = secondNumber;
-    }
-  }
-});
+main();
