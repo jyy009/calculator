@@ -70,7 +70,6 @@ const getNumberValue = (e) => {
     setSecondNumber(secondNumber + result);
     setCurrentDisplayValue(secondNumber);
   }
-  
 };
 
 // Set operator value
@@ -92,11 +91,9 @@ const setOperator = (e) => {
     setFirstNumber(result);
     currentOperator = value;
     setCurrentDisplayValue(currentOperator);
-secondNumber = ""
-// setSecondNumber("")
-console.log("Operation performed:", result);
+    secondNumber = "";
+    console.log("Operation performed:", result);
   }
-
 };
 
 const handleEqualClick = () => {
@@ -112,9 +109,8 @@ const handleEqualClick = () => {
     const result = operate(firstNumber, secondNumber, currentOperator);
     setCurrentDisplayValue(result);
     setFirstNumber(result);
-    // setSecondNumber("");
-    secondNumber = ""
-currentOperator = ""
+    secondNumber = "";
+    currentOperator = "";
     console.log("current operator after equal", currentOperator);
   }
 };
@@ -125,6 +121,27 @@ const clearCurrentDisplay = () => {
   setCurrentDisplayValue("");
   currentOperator = "";
   console.log("calc cleared");
+};
+
+const handlePointClick = () => {
+  const value = point.textContent;
+  console.log("point value:", value);
+  console.log("current display value", currentDisplayValue);
+
+  let currentDisplayAsString = currentDisplayValue.toString();
+
+  if (!currentDisplayAsString.includes(".")) {
+    const newDisplayValue = currentDisplayAsString + value;
+    console.log("current display value", newDisplayValue);
+    // setCurrentDisplayValue(newDisplayValue)
+    if (!currentOperator) {
+      firstNumber = newDisplayValue;
+      setCurrentDisplayValue(firstNumber);
+    } else {
+      secondNumber = newDisplayValue;
+      setCurrentDisplayValue(secondNumber);
+    }
+  }
 };
 
 const main = () => {
@@ -140,6 +157,7 @@ const main = () => {
     oper.addEventListener("click", setOperator);
   });
 
+  point.addEventListener("click", handlePointClick);
   clearCurrentDisplay();
 };
 
