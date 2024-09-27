@@ -1,69 +1,96 @@
 * {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gray-bg: #5c5c5f;
+  --dark-gray-bg: #2a2a2c;
+  --orange-bg: #ff9f0a;
+  --text-color: #ffffff;
+  --black-bg: #000000;
+}
+
+body {
+  background-color: antiquewhite;
 }
 
 .page-container {
   display: flex;
-
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
 
-
-
-.page-container .calc-container {
+.calc-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 300px;
-  height: 400px;
+  height: 450px;
+  background-color: var(--black-bg);
+  border-radius: 10px;
 }
 
 .display-container {
   display: flex;
-  width: 100%;
+  width: calc(100% - 30px);
 }
-.display-container .current-display {
+.current-display {
   width: 100%;
-  height: 100%;
-  min-height: 50px;
+  height: 50px;
+  background-color: var(--black-bg);
+  border: none;
+  color: var(--text-color);
+  font-size: 2rem;
 }
 
-.page-container .calc-container .keypad-container {
+.calc-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  
+  width: calc(100% - 30px);
+  gap: 5px;
 }
 
-.page-container .calc-container .keypad-container .container-row {
+.container-row {
   display: flex;
-  width: 100%;
-  height: 100%;
-  
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
-.page-container .calc-container .keypad-container .container-row button {
+.container-row button {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex: 1;
-  width: 100%;
-  color: white;
-
+  color: var(--text-color);
+  border: none;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  font-size: 2rem;
+  font-weight: 100;
 }
 
-.operator {
-  background-color: #FF9F0A;
+.operator,
+.equal {
+  background-color: var(--orange-bg);
 }
 
-.clear, .sign, .percentage {
-  background-color: #5C5C5F;
+.clear,
+.sign,
+.percentage {
+  background-color: var(--gray-bg);
+}
+
+.operand,
+.point {
+  background-color: var(--dark-gray-bg);
 }
 
 #zero {
-  /* flex: 2; */
-  flex: 0 0 50%;
+  flex: 0 0 calc(100% / 2);
 }

@@ -9,12 +9,11 @@
   </head>
   <body>
     <div class="page-container">
-      <div class="calc-container">
+      <div class="calc-wrapper">
         <div class="display-container">
           <button class="current-display">0</button>
         </div>
-
-        <div class="keypad-container">
+        <div class="calc-container">
           <div class="container-row">
             <button type="button" class="clear" value="clear">AC</button>
             <button type="button" class="sign" value="sign">+/-</button>
@@ -31,7 +30,9 @@
             <button type="button" class="operand" value="4">4</button>
             <button type="button" class="operand" value="5">5</button>
             <button type="button" class="operand" value="6">6</button>
-            <button type="button" class="operator" id="subtract">&minus;</button>
+            <button type="button" class="operator" id="subtract">
+              &minus;
+            </button>
           </div>
           <div class="container-row">
             <button type="button" class="operand" value="1">1</button>
@@ -39,7 +40,7 @@
             <button type="button" class="operand" value="3">3</button>
             <button type="button" class="operator" id="add">&plus;</button>
           </div>
-          <div class="container-row">
+          <div class="container-row" id="zero-row">
             <button type="button" class="operand" id="zero" value="0">0</button>
             <button type="button" class="point" value=".">.</button>
             <button type="button" class="equal" value="=">=</button>

@@ -11,19 +11,15 @@ const multiply = (a, b) => a * b;
 
 const divide = (a, b) => a / b;
 
-const pageContainer = document.querySelector(".page-container");
 const calcContainer = document.querySelector(".calc-container");
-const displayContainer = document.querySelector(".display-container");
-const keypadContainer = pageContainer.querySelector(".keypad-container");
-const displayButton = displayContainer.querySelector(".current-display");
-const equal = keypadContainer.querySelector(".equal");
-const clear = keypadContainer.querySelector(".clear");
-const sign = keypadContainer.querySelector(".sign");
-const percent = keypadContainer.querySelector(".percentage");
-const numbers = keypadContainer.querySelectorAll(".operand");
-const operators = keypadContainer.querySelectorAll(".operator");
-const addButton = document.getElementById("plus-button");
-const point = keypadContainer.querySelector(".point");
+const displayButton = document.querySelector(".current-display");
+const equal = calcContainer.querySelector(".equal");
+const clear = calcContainer.querySelector(".clear");
+const sign = calcContainer.querySelector(".sign");
+const percent = calcContainer.querySelector(".percentage");
+const numbers = calcContainer.querySelectorAll(".operand");
+const operators = calcContainer.querySelectorAll(".operator");
+const point = calcContainer.querySelector(".point");
 
 const operate = (a, b, oper) => {
   switch (oper) {
@@ -49,12 +45,12 @@ const setCurrentDisplayValue = (value) => {
 };
 
 const setFirstNumber = (value) => {
-  firstNumber = (value);
+  firstNumber = value;
   console.log("first number set to:", firstNumber);
 };
 
 const setSecondNumber = (value) => {
-  secondNumber = (value);
+  secondNumber = value;
   console.log("second number set to:", secondNumber);
 };
 
@@ -87,7 +83,11 @@ const setOperator = (e) => {
   }
   if (firstNumber && currentOperator && secondNumber) {
     console.log("current operator value", currentOperator);
-    const result = operate(parseFloat(firstNumber), parseFloat(secondNumber), currentOperator);
+    const result = operate(
+      parseFloat(firstNumber),
+      parseFloat(secondNumber),
+      currentOperator
+    );
     setFirstNumber(result);
     currentOperator = value;
     setCurrentDisplayValue(currentOperator);
@@ -106,7 +106,11 @@ const handleEqualClick = () => {
     setCurrentDisplayValue("error");
     return;
   } else {
-    const result = operate(parseFloat(firstNumber), parseFloat(secondNumber), currentOperator);
+    const result = operate(
+      parseFloat(firstNumber),
+      parseFloat(secondNumber),
+      currentOperator
+    );
     setCurrentDisplayValue(result);
     setFirstNumber(result);
     secondNumber = "";
@@ -128,7 +132,6 @@ const handlePointClick = () => {
   console.log("point value:", value);
   console.log("current display value", currentDisplayValue);
 
-  
   let currentDisplayAsString = currentDisplayValue.toString();
 
   if (!currentDisplayAsString.includes(".")) {
@@ -151,15 +154,15 @@ const handlePercentClick = () => {
 };
 
 const handleSignClick = () => {
-  const result = currentDisplayValue * -1
-  setCurrentDisplayValue(result)
+  const result = currentDisplayValue * -1;
+  setCurrentDisplayValue(result);
 
   if (!currentOperator) {
-    setFirstNumber(result)
+    setFirstNumber(result);
   } else {
-    setSecondNumber(result)
+    setSecondNumber(result);
   }
-}
+};
 
 const main = () => {
   numbers.forEach((num) => {
@@ -179,7 +182,7 @@ const main = () => {
 
   percent.addEventListener("click", handlePercentClick);
 
-  sign.addEventListener("click", handleSignClick)
+  sign.addEventListener("click", handleSignClick);
 };
 
 main();
